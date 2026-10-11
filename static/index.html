@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TPCMS - Training, Programme & Certificate Management System</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm0 13l-7-3.18V17l7 3.18L19 17v-5.18L12 15z'/></svg>">
+</head>
+<body>
+
+  <!-- Application Shell -->
+  <div class="app-container">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand-wrapper">
+        <div class="brand-icon-box">
+          <!-- Graduation Cap Icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3L1 9l11 6 9-4.91V18h2V9L12 3z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 12v6c0 2.5 3.6 4.5 8 4.5s8-2 8-4.5v-6"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-text-title">CertiTrack Pro</div>
+          <div class="brand-text-subtitle">TPCMS Enterprise</div>
+        </div>
+      </div>
+
+      <!-- Nav Links -->
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a class="nav-link active" data-tab="dashboard" id="nav-dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="programmes" id="nav-programmes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+            <span>Training Programmes</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="trainees" id="nav-trainees">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Trainees & Batches</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="certificates" id="nav-certificates">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            <span>Certificates Hub</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="verify" id="nav-verify">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>Credential Verification</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-tab="database" id="nav-database">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+            <span>MySQL Console</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Footer & DB Engine Pill -->
+      <div class="sidebar-footer">
+        <div class="db-status-pill" id="db-status-trigger" title="Click to view or switch MySQL database">
+          <div class="status-indicator">
+            <span class="dot-pulse sqlite-mode" id="db-indicator-dot"></span>
+            <span id="db-indicator-text" style="font-weight: 600;">Connecting...</span>
+          </div>
+          <svg style="width: 14px; height: 14px; color: var(--text-muted);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+
+      <!-- Sticky Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="page-title" id="page-title-heading">Executive Dashboard</h1>
+          <div class="search-box-wrap no-print">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="text" id="global-search-input" class="search-input" placeholder="Search programmes, trainees, certificates...">
+          </div>
+        </div>
+
+        <div class="topbar-right no-print">
+          <button class="btn btn-secondary btn-sm" id="btn-open-mysql-modal">
+            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+            <span>MySQL Settings</span>
+          </button>
+          <button class="btn btn-primary btn-sm" id="btn-quick-create-prog">
+            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            <span>New Programme</span>
+          </button>
+          <button class="btn btn-gold btn-sm" id="btn-quick-issue-cert">
+            <svg style="width: 15px; height: 15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            <span>Issue Certificate</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Views -->
+      <div class="content-area">
+
+        <!-- ================================================================ -->
+        <!-- TAB 1: EXECUTIVE DASHBOARD -->
+        <!-- ================================================================ -->
+        <section id="tab-dashboard" class="tab-pane active">
+          
+          <!-- KPI Metrics Row -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Total Trainees</span>
+                <div class="kpi-icon blue">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpi-trainees">--</div>
+              <div class="kpi-trend">
+                <span>Active Corporate & Academic Learners</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Training Programmes</span>
+                <div class="kpi-icon emerald">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpi-programmes">--</div>
+              <div class="kpi-trend">
+                <span id="kpi-active-prog-label">-- In active enrollment</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Issued Certificates</span>
+                <div class="kpi-icon gold">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpi-certificates">--</div>
+              <div class="kpi-trend">
+                <span>Cryptographically Verified</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Completion Rate</span>
+                <div class="kpi-icon purple">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+              </div>
+              <div class="kpi-value" id="kpi-completion-rate">--%</div>
+              <div class="kpi-trend">
+                <span id="kpi-avg-score-label">Avg Assessment: --%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mid Section: Category Distribution & Recent Certificates -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px;">
+            
+            <!-- Category Distribution Panel -->
+            <div class="glass-panel" style="margin-bottom: 0;">
+              <div class="panel-header">
+                <h3 class="panel-title">Programme Domains & Focus Areas</h3>
+                <span class="badge badge-blue">Categorization</span>
+              </div>
+              <div id="category-bars-container" style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Recent Certificates Panel -->
+            <div class="glass-panel" style="margin-bottom: 0;">
+              <div class="panel-header">
+                <h3 class="panel-title">Recently Issued Credentials</h3>
+                <button class="btn btn-secondary btn-sm" onclick="navigateToTab('certificates')">View All</button>
+              </div>
+              <div id="dashboard-recent-certs" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Section: Live Audit Logs -->
+          <div class="glass-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">System & Security Audit Trail</h3>
+              <span class="badge badge-purple">DBMS Triggers & Logs</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Action</th>
+                    <th>Entity</th>
+                    <th>Details</th>
+                    <th>Logged By</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-audit-tbody">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 2: TRAINING PROGRAMMES -->
+        <!-- ================================================================ -->
+        <section id="tab-programmes" class="tab-pane">
+          <div class="section-toolbar">
+            <div class="filter-group">
+              <select id="filter-prog-category" class="select-filter">
+                <option value="All">All Categories</option>
+                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                <option value="Cloud Computing">Cloud Computing</option>
+                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Management">Management</option>
+              </select>
+              <select id="filter-prog-status" class="select-filter">
+                <option value="All">All Statuses</option>
+                <option value="Open for Enrollment">Open for Enrollment</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="btn-add-programme-modal">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              <span>Add New Programme</span>
+            </button>
+          </div>
+
+          <!-- Courses Grid -->
+          <div class="courses-grid" id="programmes-card-grid">
+            <!-- Populated via JS -->
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 3: TRAINEES & ENROLLMENTS -->
+        <!-- ================================================================ -->
+        <section id="tab-trainees" class="tab-pane">
+          <div class="section-toolbar">
+            <div class="filter-group">
+              <input type="text" id="trainee-filter-search" class="select-filter" placeholder="Filter trainees..." style="width: 260px;">
+              <select id="enrollment-status-filter" class="select-filter">
+                <option value="All">All Enrollment Status</option>
+                <option value="Enrolled">Enrolled</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-secondary" id="btn-add-trainee-modal">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></svg>
+                <span>Register Trainee</span>
+              </button>
+              <button class="btn btn-primary" id="btn-enroll-trainee-modal">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M12 9v6M9 12h6"/></svg>
+                <span>Enroll in Course</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-panel">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Trainee</th>
+                    <th>Course Enrolled</th>
+                    <th>Progress</th>
+                    <th>Attendance</th>
+                    <th>Assessment Score</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="enrollments-table-tbody">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 4: CERTIFICATES HUB -->
+        <!-- ================================================================ -->
+        <section id="tab-certificates" class="tab-pane">
+          <div class="section-toolbar">
+            <div class="filter-group">
+              <input type="text" id="cert-filter-search" class="select-filter" placeholder="Search by number or recipient..." style="width: 280px;">
+              <select id="cert-status-filter" class="select-filter">
+                <option value="All">All Certificates</option>
+                <option value="Active">Active</option>
+                <option value="Revoked">Revoked</option>
+              </select>
+            </div>
+            <button class="btn btn-gold" id="btn-issue-cert-modal">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+              <span>Issue New Certificate</span>
+            </button>
+          </div>
+
+          <div class="glass-panel">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Certificate ID</th>
+                    <th>Recipient</th>
+                    <th>Programme Title</th>
+                    <th>Score & Grade</th>
+                    <th>Issue Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="certificates-table-tbody">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 5: CREDENTIAL VERIFICATION PORTAL -->
+        <!-- ================================================================ -->
+        <section id="tab-verify" class="tab-pane">
+          <div style="max-width: 820px; margin: 0 auto; text-align: center; padding: 20px 0;">
+            <div style="display: inline-flex; padding: 14px; background: rgba(59, 130, 246, 0.15); border-radius: 50%; color: var(--primary); margin-bottom: 16px;">
+              <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/>
+              </svg>
+            </div>
+            <h2 style="font-size: 2rem; margin-bottom: 8px;">Official Certificate Verification Registry</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 28px;">
+              Verify authentic academic and professional qualifications issued by the Certification Directorate.
+            </p>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+              <input type="text" id="verify-input-query" class="form-control" style="font-size: 1rem; padding: 14px 18px;" placeholder="e.g. CERT-2026-89101 or SHA256 Verification Hash...">
+              <button class="btn btn-primary" id="btn-run-verification" style="padding: 0 28px; font-size: 0.95rem;">
+                <span>Verify Credential</span>
+              </button>
+            </div>
+
+            <!-- Quick Demo Pills -->
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 30px;">
+              <span style="font-size: 0.8rem; color: var(--text-subtle);">Try Sample Credentials:</span>
+              <button class="btn btn-secondary btn-sm" onclick="quickVerify('CERT-2026-89101')">CERT-2026-89101</button>
+              <button class="btn btn-secondary btn-sm" onclick="quickVerify('CERT-2026-44219')">CERT-2026-44219</button>
+              <button class="btn btn-secondary btn-sm" onclick="quickVerify('CERT-2026-30114')">CERT-2026-30114</button>
+            </div>
+
+            <!-- Verification Result Box -->
+            <div id="verification-result-panel" style="display: none; text-align: left;" class="glass-panel">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- TAB 6: MYSQL & DBMS CONSOLE -->
+        <!-- ================================================================ -->
+        <section id="tab-database" class="tab-pane">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+            
+            <!-- Connection Status & Switcher -->
+            <div class="glass-panel" style="margin-bottom: 0;">
+              <div class="panel-header">
+                <h3 class="panel-title">Active Database Engine</h3>
+                <span class="badge badge-green" id="db-engine-active-badge">Checking...</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">
+                This system features a dual database adapter. Connect to a live MySQL 8.0 server with the button below, or run in integrated local mode.
+              </p>
+              
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 14px; border-radius: var(--radius-md); font-size: 0.84rem; display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px;">
+                <div><strong style="color: var(--text-muted);">Configured Host:</strong> <span class="font-mono" id="disp-db-host">localhost:3306</span></div>
+                <div><strong style="color: var(--text-muted);">Database:</strong> <span class="font-mono" id="disp-db-name">training_mgmt_db</span></div>
+                <div><strong style="color: var(--text-muted);">Status Details:</strong> <span id="disp-db-info">Checking connection...</span></div>
+              </div>
+
+              <div style="display: flex; gap: 10px;">
+                <button class="btn btn-primary" id="btn-db-tab-reconnect">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  <span>Connect / Recheck MySQL</span>
+                </button>
+                <button class="btn btn-secondary" id="btn-db-switch-sqlite">
+                  <span>Switch to Local Mode</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Table Record Statistics -->
+            <div class="glass-panel" style="margin-bottom: 0;">
+              <div class="panel-header">
+                <h3 class="panel-title">Schema Relational Entities</h3>
+                <span class="badge badge-blue">Tables Count</span>
+              </div>
+              <div id="table-counts-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive SQL Query Runner -->
+          <div class="glass-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">DBMS SQL Query Console</h3>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary btn-sm" onclick="setQueryPreset('SELECT * FROM programmes;')">Programmes</button>
+                <button class="btn btn-secondary btn-sm" onclick="setQueryPreset('SELECT * FROM vw_programme_analytics;')">Analytics View</button>
+                <button class="btn btn-secondary btn-sm" onclick="setQueryPreset('SELECT c.certificate_number, t.full_name, c.grade, c.issue_date FROM certificates c JOIN trainees t ON c.trainee_id = t.trainee_id;')">Joined Query</button>
+              </div>
+            </div>
+            
+            <textarea id="sql-console-input" class="db-code-editor" placeholder="Type SQL query here (e.g. SELECT * FROM programmes;)">SELECT * FROM programmes;</textarea>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+              <span style="font-size: 0.78rem; color: var(--text-subtle);">Executes directly against active database engine.</span>
+              <button class="btn btn-primary btn-sm" id="btn-run-sql">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <span>Execute SQL Statement</span>
+              </button>
+            </div>
+
+            <!-- Query Results -->
+            <div class="db-results-box" id="sql-results-container" style="display: none;">
+              <!-- Dynamic Table Output -->
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ====================================================================== -->
+  <!-- MODALS -->
+  <!-- ====================================================================== -->
+
+  <!-- MODAL: CERTIFICATE VIEWER & PRINT PREVIEW -->
+  <div class="modal-overlay" id="modal-cert-viewer">
+    <div class="modal-card wide">
+      <div class="modal-header no-print">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <h3 class="panel-title" id="cert-viewer-modal-title">Official Credential Document</h3>
+          <span class="badge badge-green" id="cert-viewer-badge">Authentic</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button class="btn btn-gold btn-sm" onclick="window.print()">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+            <span>Print / Save PDF</span>
+          </button>
+          <button class="modal-close-btn" onclick="closeModal('modal-cert-viewer')">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- The Printable Certificate Sheet -->
+      <div class="certificate-preview-container">
+        <div class="certificate-paper" id="certificate-print-sheet">
+          <div class="cert-border-outer"></div>
+          <div class="cert-border-inner"></div>
+          <div class="cert-corner-ornament cert-corner-tl"></div>
+          <div class="cert-corner-ornament cert-corner-tr"></div>
+          <div class="cert-corner-ornament cert-corner-bl"></div>
+          <div class="cert-corner-ornament cert-corner-br"></div>
+          <div class="cert-watermark">AUTHENTIC</div>
+
+          <!-- Header -->
+          <div class="cert-header">
+            <div class="cert-org-logo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+              </svg>
+              <span class="cert-org-title">National Academic & Professional Board</span>
+            </div>
+            <h1 class="cert-main-title">Certificate of Achievement</h1>
+            <p class="cert-subtitle">This is officially conferred upon</p>
+          </div>
+
+          <!-- Recipient -->
+          <div>
+            <div class="cert-recipient-name" id="view-cert-recipient">Elena Rostova</div>
+            <p class="cert-statement">
+              having satisfied all rigorous curriculum requirements, comprehensive hands-on laboratory benchmarks, 
+              and successfully completed the specialized programme in
+            </p>
+            <div class="cert-course-title" id="view-cert-course">Applied Generative AI & Large Language Models</div>
+          </div>
+
+          <!-- Signatures & Golden Embossed Seal -->
+          <div class="cert-footer-row">
+            <div class="cert-sig-box">
+              <div class="cert-sig-font" id="view-cert-inst-sig">Dr. Maya Lin</div>
+              <div class="cert-sig-line"></div>
+              <div class="cert-sig-title">Program Lead / Instructor</div>
+            </div>
+
+            <!-- Metallic Gold Foil Seal -->
+            <div class="cert-gold-seal">
+              <div class="cert-seal-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="cert-seal-text" id="view-cert-grade">DISTINCTION</div>
+            </div>
+
+            <div class="cert-sig-box">
+              <div class="cert-sig-font">Julian Thorne</div>
+              <div class="cert-sig-line"></div>
+              <div class="cert-sig-title">Director of Certification</div>
+            </div>
+          </div>
+
+          <!-- Cryptographic Metadata Footnote -->
+          <div class="cert-meta-bar">
+            <span>ID: <strong id="view-cert-id">CERT-2026-89101</strong></span>
+            <span>ISSUED: <strong id="view-cert-date">2026-10-02</strong></span>
+            <span>VERIFICATION TOKEN: <strong id="view-cert-hash">e3b0c44298fc1c...</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ISSUE NEW CERTIFICATE -->
+  <div class="modal-overlay" id="modal-issue-cert">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="panel-title">Issue Professional Credential</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-issue-cert')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-issue-certificate">
+        <div class="form-group">
+          <label class="form-label">Select Eligible Completed Trainee</label>
+          <select id="issue-enrollment-select" class="form-control" required>
+            <option value="">Loading eligible candidates...</option>
+          </select>
+          <span style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; display: block;">
+            Only candidates meeting course attendance & passing score requirements are displayed.
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Certificate Template Style</label>
+          <select id="issue-template-select" class="form-control">
+            <option value="Classic Royal Navy">Classic Royal Navy & Gold</option>
+            <option value="Obsidian Gold Seal">Obsidian Gold Seal (Executive)</option>
+            <option value="Modern Emerald Elegance">Modern Emerald Elegance</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Issuing Authority / Signature Header</label>
+          <input type="text" id="issue-authority-input" class="form-control" value="Academic Board & Directorate of Certification">
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-issue-cert')">Cancel</button>
+          <button type="submit" class="btn btn-gold">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            <span>Issue & Sign Certificate</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD PROGRAMME -->
+  <div class="modal-overlay" id="modal-add-programme">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="panel-title">Create Training Programme</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-add-programme')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-create-programme">
+        <div class="form-grid">
+          <div class="form-group col-span-2">
+            <label class="form-label">Programme Title</label>
+            <input type="text" id="prog-title" class="form-control" placeholder="e.g. Full-Stack Cloud Architecture" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="prog-category" class="form-control">
+              <option value="Artificial Intelligence">Artificial Intelligence</option>
+              <option value="Cloud Computing">Cloud Computing</option>
+              <option value="Cybersecurity">Cybersecurity</option>
+              <option value="Software Engineering">Software Engineering</option>
+              <option value="Management">Management</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Level</label>
+            <select id="prog-level" class="form-control">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate" selected>Intermediate</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Executive">Executive</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Assigned Instructor</label>
+            <select id="prog-instructor" class="form-control">
+              <option value="">Select Instructor...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Duration (Hours)</label>
+            <input type="number" id="prog-hours" class="form-control" value="40" min="10" max="300">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Passing Score (%)</label>
+            <input type="number" id="prog-pass-score" class="form-control" value="75" min="50" max="100">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Min Attendance (%)</label>
+            <input type="number" id="prog-att-pct" class="form-control" value="80" min="50" max="100">
+          </div>
+
+          <div class="form-group col-span-2">
+            <label class="form-label">Description & Outcomes</label>
+            <textarea id="prog-desc" class="form-control" placeholder="Brief outline of syllabus modules and key objectives..."></textarea>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add-programme')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Programme</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: REGISTER TRAINEE -->
+  <div class="modal-overlay" id="modal-add-trainee">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="panel-title">Register New Trainee</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-add-trainee')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-create-trainee">
+        <div class="form-grid">
+          <div class="form-group col-span-2">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="trainee-name" class="form-control" placeholder="e.g. John Doe" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Official Email</label>
+            <input type="email" id="trainee-email" class="form-control" placeholder="name@domain.com" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" id="trainee-phone" class="form-control" placeholder="+1 555-0100">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Organization / College</label>
+            <input type="text" id="trainee-org" class="form-control" value="Tech Academy Enterprise">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <select id="trainee-dept" class="form-control">
+              <option value="">Select Department...</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-add-trainee')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Register Trainee</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ENROLL TRAINEE -->
+  <div class="modal-overlay" id="modal-enroll-trainee">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="panel-title">Enroll Trainee in Programme</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-enroll-trainee')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-enroll-trainee">
+        <div class="form-group">
+          <label class="form-label">Select Trainee</label>
+          <select id="enroll-trainee-select" class="form-control" required>
+            <option value="">Select Trainee...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Select Programme</label>
+          <select id="enroll-prog-select" class="form-control" required>
+            <option value="">Select Programme...</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-enroll-trainee')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm Enrollment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: UPDATE ENROLLMENT PROGRESS & GRADE -->
+  <div class="modal-overlay" id="modal-update-progress">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="panel-title">Update Assessment & Progress</h3>
+        <button class="modal-close-btn" onclick="closeModal('modal-update-progress')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-update-progress">
+        <input type="hidden" id="edit-enrollment-id">
+        <div style="margin-bottom: 16px; padding: 12px; background: rgba(15, 23, 42, 0.6); border-radius: var(--radius-md);">
+          <strong id="edit-enrollment-trainee-name" style="color: #fff; font-size: 1rem;">--</strong>
+          <div id="edit-enrollment-prog-title" style="color: var(--text-muted); font-size: 0.85rem; margin-top: 2px;">--</div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Progress Percentage (%)</label>
+            <input type="number" id="edit-progress-pct" class="form-control" min="0" max="100" step="1" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Attendance Percentage (%)</label>
+            <input type="number" id="edit-att-pct" class="form-control" min="0" max="100" step="1" required>
+          </div>
+
+          <div class="form-group col-span-2">
+            <label class="form-label">Final Assessment Score (%)</label>
+            <input type="number" id="edit-score" class="form-control" min="0" max="100" step="0.5" placeholder="e.g. 92.5">
+          </div>
+
+          <div class="form-group col-span-2">
+            <label class="form-label">Instructor Remarks</label>
+            <input type="text" id="edit-remarks" class="form-control" placeholder="Outstanding performance on final capstone benchmark">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-update-progress')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: MYSQL CONNECTION SETTINGS -->
+  <div class="modal-overlay" id="modal-mysql-config">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <h3 class="panel-title">MySQL Database Configuration</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('modal-mysql-config')">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="form-mysql-config">
+        <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 18px;">
+          Connect your local or cloud MySQL instance (e.g. XAMPP, Homebrew MySQL, Docker). 
+          Our system will execute <code>schema.sql</code> and configure all tables automatically.
+        </p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">MySQL Host</label>
+            <input type="text" id="mysql-host-input" class="form-control" value="localhost" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Port</label>
+            <input type="number" id="mysql-port-input" class="form-control" value="3306" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Username</label>
+            <input type="text" id="mysql-user-input" class="form-control" value="root" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" id="mysql-pass-input" class="form-control" placeholder="(leave blank if none)">
+          </div>
+
+          <div class="form-group col-span-2">
+            <label class="form-label">Database Name</label>
+            <input type="text" id="mysql-dbname-input" class="form-control" value="training_mgmt_db" required>
+          </div>
+        </div>
+
+        <div id="mysql-test-feedback" style="display: none; padding: 10px 14px; border-radius: var(--radius-md); font-size: 0.84rem; margin-top: 12px;"></div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+          <button type="button" class="btn btn-secondary" id="btn-test-mysql-conn">
+            <span>Test Connection</span>
+          </button>
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('modal-mysql-config')">Close</button>
+            <button type="submit" class="btn btn-primary">Connect & Migrate</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-box"></div>
+
+  <!-- Core App Logic -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
